@@ -1,24 +1,33 @@
 const express = require("express");
+const colors = require("colors");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const cors = require("cors");
 require("dotenv").config();
-const products = require("./_data/products");
+const connectDB = require("./config/db");
+
+const productRoutes = require("./routes/productRoutes");
+
+connectDB();
 
 const app = express();
+
+// Middleware
+app.use(express.json());
+app.use(morgan("combined"));
+app.use(helmet());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("API is running....");
 });
 
-app.get("/api/products", (req, res) => {
-  res.json(products);
-});
-
-app.get("/api/products/:id", (req, res) => {
-  const product = products.find((p) => p._id === req.params.id);
-  res.json(product);
-});
+app.use("/api/products", productRoutes);
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV} port ${PORT}`);
+  console.log(
+    `Server running in ${process.env.NODE_ENV} port ${PORT}`.yellow.bold
+  );
 });
