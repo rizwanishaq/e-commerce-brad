@@ -1,0 +1,42 @@
+# My Variables
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU4ZDk1N2YyMDBhYTcyNjUyMWU0YzI1In0sImlhdCI6MTU4NjMzODcxNywiZXhwIjoxNTg2Njk4NzE3fQ.ChR446yYuA-D-w6cdYDDkH4WV65kYUNYHBoWg_7TIJ0
+### Get request (auth)
+GET http://localhost:5000/api/products
+
+
+### Get contact
+GET http://localhost:5000/api/products/5f76e908b7f8177f6abb83b8
+
+### Post Request
+GET http://localhost:5000/api/auth
+
+### Register User
+POST http://localhost:5000/api/users
+Content-Type: application/json
+
+{
+   "name": "John Doe",
+   "email": "whatever@gmail.com",
+   "password": "1234567"
+}
+
+### Register User
+POST http://localhost:5000/api/users
+Content-Type: application/json
+
+{
+   "name": "san Doe",
+   "email": "whatever1@gmail.com",
+   "password": "1234567"
+}
+
+
+### Login User
+POST http://localhost:5000/api/auth
+Content-Type: application/json
+
+{
+   "email": "whatever@gmail.com",
+   "password": "1234567"
+}
+
