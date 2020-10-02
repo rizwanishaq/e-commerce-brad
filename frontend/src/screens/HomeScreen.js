@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
+import ReactLoading from "react-loading";
 import Product from "../components/Product";
+import { ProductContext } from "../contexts/productContext";
 
 const HomeScreen = () => {
-  const [products, setProducts] = useState([]);
+  const { products, loading, error } = useContext(ProductContext);
+  console.log(error);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get("/api/products");
-      setProducts(data);
-    };
-    fetchProducts();
-  }, []);
+  if (loading) return <ReactLoading type={"balls"} color={"green"} />;
 
   return (
     <>
       <h1>Latest Products</h1>
       <Row>
-        {products.map((product) => (
-          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-            <Product product={product} />
-          </Col>
-        ))}
+        {products &&
+          products.map((product) => (
+            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Product product={product} />
+            </Col>
+          ))}
       </Row>
     </>
   );
