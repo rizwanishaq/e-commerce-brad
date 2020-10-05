@@ -17,10 +17,10 @@ import { ProductContext } from "../contexts/productContext";
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1);
 
-  const { loading, error, product, setId } = useContext(ProductContext);
+  const { loading, error, product, setProductId } = useContext(ProductContext);
 
   useEffect(() => {
-    setId(match.params.id);
+    setProductId(match.params.id);
     // eslint-disable-next-line
   }, [match]);
 
