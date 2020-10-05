@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
 import Rating from "../components/Rating";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
+import { ProductContext } from "../contexts/productContext";
 
 const ProductScreen = ({ match }) => {
-  const [product, setProduct] = useState({});
+  const { loading, error, product, setId } = useContext(ProductContext);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const { data } = await axios.get(`/api/products/${match.params.id}`);
-      setProduct(data);
-    };
-    fetchProduct();
+    setId(match.params.id);
     // eslint-disable-next-line
-  }, []);
+  }, [match]);
+
+  if (loading) return <Loader />;
+
+  if (error) return <Message variant="danger">{error}</Message>;
 
   return (
     <>

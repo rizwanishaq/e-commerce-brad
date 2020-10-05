@@ -7,6 +7,8 @@ const ProductContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
+  const [product, setProduct] = useState({});
+  const [id, setId] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -20,13 +22,35 @@ const ProductContextProvider = ({ children }) => {
             ? err.response.data.message
             : err.message
         );
+        setLoading(false);
       }
     };
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/${id}`);
+        setProduct(data);
+        setLoading(false);
+      } catch (err) {
+        setError(
+          err.response && err.response.message
+            ? err.response.data.message
+            : err.message
+        );
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+    // eslint-disable-next-line
+  }, [id]);
+
   return (
-    <ProductContext.Provider value={{ products, loading, error }}>
+    <ProductContext.Provider
+      value={{ products, loading, error, product, setId }}
+    >
       {children}
     </ProductContext.Provider>
   );

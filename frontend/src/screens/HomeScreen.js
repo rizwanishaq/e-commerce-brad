@@ -1,14 +1,17 @@
 import React, { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
-import ReactLoading from "react-loading";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
+
 import Product from "../components/Product";
 import { ProductContext } from "../contexts/productContext";
 
 const HomeScreen = () => {
   const { products, loading, error } = useContext(ProductContext);
-  console.log(error);
 
-  if (loading) return <ReactLoading type={"balls"} color={"green"} />;
+  if (loading) return <Loader />;
+
+  if (error) return <Message variant="danger">{error}</Message>;
 
   return (
     <>
