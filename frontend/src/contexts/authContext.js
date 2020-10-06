@@ -47,9 +47,28 @@ const AuthContextProvider = ({ children }) => {
     setUserInfo(null);
   };
 
+  const register = async (name, email, password) => {
+    try {
+      const { data } = await axios.post(
+        "/api/users",
+        { name, email, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      setUserInfo(data);
+      setAuthLoading(false);
+    } catch (err) {
+      setAuthError(
+        err.response && err.response.message
+          ? err.response.data.message
+          : err.message
+      );
+      setAuthLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ login, authError, authLoading, userInfo, logout }}
+      value={{ login, authError, authLoading, userInfo, logout, register }}
     >
       {children}
     </AuthContext.Provider>
