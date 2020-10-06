@@ -2,15 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./bootstrap.min.css";
 import "./index.css";
-import ProductContextProvider from "./contexts/productContext";
 import App from "./App";
+import ProductContextProvider from "./contexts/productContext";
 import CartContextProvider from "./contexts/cartContext";
+import AuthContextProvider from "./contexts/authContext";
 
 ReactDOM.render(
-  <CartContextProvider>
-    <ProductContextProvider>
-      <App />
-    </ProductContextProvider>
-  </CartContextProvider>,
+  <AuthContextProvider>
+    <CartContextProvider>
+      <ProductContextProvider>
+        <App />
+      </ProductContextProvider>
+    </CartContextProvider>
+  </AuthContextProvider>,
   document.getElementById("root")
 );

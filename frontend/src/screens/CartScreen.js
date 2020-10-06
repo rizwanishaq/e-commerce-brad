@@ -42,7 +42,7 @@ const CartScreen = ({ match, location, history }) => {
           <Message>
             Your cart is empty{" "}
             <Link to="/">
-              Go Back <i class="fas fa-home"></i>
+              Go Back <i className="fas fa-home"></i>
             </Link>
           </Message>
         ) : (
