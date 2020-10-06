@@ -1,11 +1,18 @@
 # My Variables
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU4ZDk1N2YyMDBhYTcyNjUyMWU0YzI1In0sImlhdCI6MTU4NjMzODcxNywiZXhwIjoxNTg2Njk4NzE3fQ.ChR446yYuA-D-w6cdYDDkH4WV65kYUNYHBoWg_7TIJ0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzZlOTA4YjdmODE3N2Y2YWJiODNiNCIsImlhdCI6MTYwMTk2OTE2MiwiZXhwIjoxNjA0NTYxMTYyfQ.XsmBPZ3t4KruoM2OwkLkfCwrFMt1lPKgtTQVjdMd8us
 ### Get request (auth)
 GET http://localhost:5000/api/products
 
 
 ### Get contact
 GET http://localhost:5000/api/products/5f76e908b7f8177f6abb83b8
+
+
+### Get userprofile
+GET http://localhost:5000/api/users/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzZlOTA4YjdmODE3N2Y2YWJiODNiNCIsImlhdCI6MTYwMTk2OTE2MiwiZXhwIjoxNjA0NTYxMTYyfQ.XsmBPZ3t4KruoM2OwkLkfCwrFMt1lPKgtTQVjdMd8us
+
+
 
 ### Post Request
 GET http://localhost:5000/api/auth
@@ -15,7 +22,7 @@ POST http://localhost:5000/api/users/login
 Content-Type: application/json
 
 {
-   "email": "admin@example.com",
+   "email": "JohnDoe@example.com",
    "password": "123456"
 }
 
@@ -24,9 +31,9 @@ POST http://localhost:5000/api/users
 Content-Type: application/json
 
 {
-   "name": "san Doe",
-   "email": "whatever1@gmail.com",
-   "password": "1234567"
+   "name": "testuser",
+   "email": "testuser@gmail.com",
+   "password": "123456"
 }
 
 
