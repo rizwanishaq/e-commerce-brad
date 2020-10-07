@@ -11,6 +11,8 @@ const ProfileScreen = ({ history }) => {
     userInfo,
     authError,
     authLoading,
+    UpdateUserDetail,
+    success,
   } = useContext(AuthContext);
 
   const [name, setName] = useState("");
@@ -39,6 +41,7 @@ const ProfileScreen = ({ history }) => {
       setMessage("Passwords do not matched");
     } else {
       // UPDATE PROFILE
+      UpdateUserDetail({ _id: userInfo._id, name, email, password });
     }
   };
 
@@ -48,6 +51,7 @@ const ProfileScreen = ({ history }) => {
         <h2>User Profile</h2>
         {message && <Message variant="danger">{message}</Message>}
         {authError && <Message variant="danger">{authError}</Message>}
+        {success && <Message variant="success">Profile updated</Message>}
         {authLoading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name">

@@ -12,6 +12,7 @@ const AuthContextProvider = ({ children }) => {
   );
   const [authError, setAuthError] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -87,6 +88,28 @@ const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const UpdateUserDetail = async (user) => {
+    try {
+      const { data } = await axios.put("/api/users/profile", user, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      setUserDetail(data);
+      setAuthLoading(false);
+      setSuccess(true);
+    } catch (err) {
+      setAuthError(
+        err.response && err.response.message
+          ? err.response.data.message
+          : err.message
+      );
+      setAuthLoading(false);
+      setSuccess(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -98,6 +121,8 @@ const AuthContextProvider = ({ children }) => {
         register,
         getUserDetail,
         userDetail,
+        UpdateUserDetail,
+        success,
       }}
     >
       {children}
