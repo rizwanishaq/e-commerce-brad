@@ -4,6 +4,7 @@ import axios from "axios";
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
+  const [userDetail, setUserDetail] = useState({});
   const [userInfo, setUserInfo] = useState(
     localStorage.getItem("userInfo")
       ? JSON.parse(localStorage.getItem("userInfo"))
@@ -66,9 +67,38 @@ const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const getUserDetail = async (id) => {
+    try {
+      const { data } = await axios.get(`/api/users/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      setUserDetail(data);
+      setAuthLoading(false);
+    } catch (err) {
+      setAuthError(
+        err.response && err.response.message
+          ? err.response.data.message
+          : err.message
+      );
+      setAuthLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ login, authError, authLoading, userInfo, logout, register }}
+      value={{
+        login,
+        authError,
+        authLoading,
+        userInfo,
+        logout,
+        register,
+        getUserDetail,
+        userDetail,
+      }}
     >
       {children}
     </AuthContext.Provider>
