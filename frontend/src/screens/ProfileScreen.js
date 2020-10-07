@@ -61,6 +61,7 @@ const ProfileScreen = ({ history }) => {
               placeholder="Enter Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              autoComplete={"name"}
             ></Form.Control>
           </Form.Group>
           <Form.Group controlId="email">
@@ -70,6 +71,7 @@ const ProfileScreen = ({ history }) => {
               placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete={"email"}
             ></Form.Control>
           </Form.Group>
           <Form.Group controlId="password">
@@ -79,6 +81,7 @@ const ProfileScreen = ({ history }) => {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete={"current-password"}
             ></Form.Control>
           </Form.Group>
           <Form.Group controlId="confirmPassword">
@@ -88,6 +91,7 @@ const ProfileScreen = ({ history }) => {
               placeholder="Enter confirm password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete={"current-password"}
             ></Form.Control>
           </Form.Group>
           <Button type="submit" variant="primary">
