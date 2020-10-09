@@ -10,9 +10,21 @@ const CartContextProvider = ({ children }) => {
       : []
   );
 
+  const [shippingAddress, setShippingAddress] = useState(
+    localStorage.getItem("shippingAddress")
+      ? JSON.parse(localStorage.getItem("shippingAddress"))
+      : {}
+  );
+
+  const [paymentMethod, setPaymentMethod] = useState("PayPal");
+
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  useEffect(() => {
+    localStorage.setItem("shippingAddress", JSON.stringify(shippingAddress));
+  }, [shippingAddress]);
 
   const addCartItem = async (id, qty) => {
     const { data } = await axios.get(`/api/products/${id}`);
@@ -33,8 +45,22 @@ const CartContextProvider = ({ children }) => {
     setCartItems(cartItems.filter((x) => x._id !== id));
   };
 
+  const saveShippingAddress = (data) => {
+    setShippingAddress(data);
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, addCartItem, removeCartItem }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addCartItem,
+        removeCartItem,
+        shippingAddress,
+        saveShippingAddress,
+        paymentMethod,
+        setPaymentMethod,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
