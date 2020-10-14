@@ -6,6 +6,9 @@ export const CartContext = createContext();
 
 const CartContextProvider = ({ children }) => {
   const { userInfo } = useContext(AuthContext);
+
+  const [order, setOrder] = useState({});
+
   const [cartItems, setCartItems] = useState(
     localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
@@ -64,10 +67,9 @@ const CartContextProvider = ({ children }) => {
           Authorization: `Bearer ${userInfo.token}`,
         },
       });
-      console.log(data);
+      setOrder(data);
       setOrderLoading(false);
       setSuccess(true);
-      return data.data;
     } catch (err) {
       setOrderError(
         err.response && err.response.message
@@ -93,6 +95,7 @@ const CartContextProvider = ({ children }) => {
         orderError,
         orderLoading,
         success,
+        order,
       }}
     >
       {children}

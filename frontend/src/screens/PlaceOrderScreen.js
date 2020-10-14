@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { CartContext } from "../contexts/cartContext";
 import CheckoutSteps from "../components/CheckoutSteps";
@@ -11,11 +11,10 @@ const PlaceOrderScreen = ({ history }) => {
     paymentMethod,
     cartItems,
     orderError,
-    orderLoading,
     placeOrder,
     success,
+    order,
   } = useContext(CartContext);
-  const [order, setOrder] = useState({});
 
   useEffect(() => {
     if (success) {
@@ -44,8 +43,7 @@ const PlaceOrderScreen = ({ history }) => {
   ).toFixed(2);
 
   const placeOrderHandler = async () => {
-    console.log(cartItems);
-    const data = await placeOrder({
+    placeOrder({
       orderItems: cartItems,
       shippingAddress: shippingAddress,
       paymentMethod: paymentMethod,
@@ -54,7 +52,6 @@ const PlaceOrderScreen = ({ history }) => {
       taxPrice: taxPrice,
       totalPrice: totalPrice,
     });
-    setOrder(data);
   };
 
   return (
