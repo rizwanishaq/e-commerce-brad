@@ -1,9 +1,11 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "./authContext";
 
 export const CartContext = createContext();
 
 const CartContextProvider = ({ children }) => {
+  const { userInfo } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState(
     localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
@@ -17,6 +19,10 @@ const CartContextProvider = ({ children }) => {
   );
 
   const [paymentMethod, setPaymentMethod] = useState("PayPal");
+
+  const [orderLoading, setOrderLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [orderError, setOrderError] = useState("");
 
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -49,6 +55,30 @@ const CartContextProvider = ({ children }) => {
     setShippingAddress(data);
   };
 
+  const placeOrder = async (order) => {
+    setOrderLoading(true);
+    try {
+      const { data } = await axios.post("/api/orders/", order, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      console.log(data);
+      setOrderLoading(false);
+      setSuccess(true);
+      return data.data;
+    } catch (err) {
+      setOrderError(
+        err.response && err.response.message
+          ? err.response.data.message
+          : err.message
+      );
+      setOrderLoading(false);
+      setSuccess(false);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -59,6 +89,10 @@ const CartContextProvider = ({ children }) => {
         saveShippingAddress,
         paymentMethod,
         setPaymentMethod,
+        placeOrder,
+        orderError,
+        orderLoading,
+        success,
       }}
     >
       {children}

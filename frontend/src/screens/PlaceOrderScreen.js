@@ -1,36 +1,61 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { CartContext } from "../contexts/cartContext";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
 import { Link } from "react-router-dom";
 
-const PlaceOrderScreen = () => {
-  const { shippingAddress, paymentMethod, cartItems } = useContext(CartContext);
+const PlaceOrderScreen = ({ history }) => {
+  const {
+    shippingAddress,
+    paymentMethod,
+    cartItems,
+    orderError,
+    orderLoading,
+    placeOrder,
+    success,
+  } = useContext(CartContext);
+  const [order, setOrder] = useState({});
+
+  useEffect(() => {
+    if (success) {
+      console.log(order);
+      history.push(`/order/${order._id}`);
+    }
+    // eslint-disable-next-line
+  }, [success]);
 
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
 
   //   Calcuate prices
-  cartItems.itemsPrice = addDecimals(
+  const itemsPrice = addDecimals(
     cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   );
 
-  cartItems.ShippingPrice = addDecimals(
-    cartItems.itemsPrice > 100.0 ? 0.0 : 100.0
-  );
-  cartItems.taxPrice = addDecimals(
-    Number((0.15 * cartItems.itemsPrice).toFixed(2))
-  );
+  const ShippingPrice = addDecimals(itemsPrice > 100.0 ? 0.0 : 100.0);
+  const taxPrice = addDecimals(Number((0.15 * itemsPrice).toFixed(2)));
 
-  cartItems.totalPrice = (
-    Number(cartItems.itemsPrice) +
-    Number(cartItems.ShippingPrice) +
-    Number(cartItems.taxPrice)
+  const totalPrice = (
+    Number(itemsPrice) +
+    Number(ShippingPrice) +
+    Number(taxPrice)
   ).toFixed(2);
 
-  const placeOrderHandler = () => {};
+  const placeOrderHandler = async () => {
+    console.log(cartItems);
+    const data = await placeOrder({
+      orderItems: cartItems,
+      shippingAddress: shippingAddress,
+      paymentMethod: paymentMethod,
+      itemsPrice: itemsPrice,
+      shippingPrice: ShippingPrice,
+      taxPrice: taxPrice,
+      totalPrice: totalPrice,
+    });
+    setOrder(data);
+  };
 
   return (
     <>
@@ -93,27 +118,30 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${cartItems.itemsPrice}</Col>
+                  <Col>${itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${cartItems.ShippingPrice}</Col>
+                  <Col>${ShippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${cartItems.taxPrice}</Col>
+                  <Col>${taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${cartItems.totalPrice}</Col>
+                  <Col>${totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {orderError && <Message variant="danger">{orderError}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button
