@@ -5,9 +5,7 @@ import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
 
 const PaymentScreen = ({ history }) => {
-  const { shippingAddress, paymentMethod, setPaymentMethod } = useContext(
-    CartContext
-  );
+  const { shippingAddress, setPaymentMethod } = useContext(CartContext);
 
   if (!shippingAddress.address) {
     history.push("/shipping");
